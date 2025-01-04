@@ -107,19 +107,25 @@
             downloadBtn.disabled = !editor.value.trim();
         });
 
-        // Handle download
+        // Handle download with name prompt
         downloadBtn.addEventListener('click', () => {
+            const fileName = prompt('Enter a name for your file:', 'document.txt');
+            if (!fileName) {
+                alert('File name is required!');
+                return;
+            }
+
             const text = editor.value;
             const blob = new Blob([text], { type: 'text/plain' });
             const url = window.URL.createObjectURL(blob);
-            
+
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'document.txt';
-            
+            link.download = fileName;
+
             document.body.appendChild(link);
             link.click();
-            
+
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url);
         });
